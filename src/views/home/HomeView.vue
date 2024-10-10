@@ -1,17 +1,23 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { RouterLink, RouterView } from 'vue-router'
+import { ref } from 'vue';
+import { RouterLink, RouterView } from 'vue-router';
 
-const flag = ref(true)
+const flag = ref(true);
 
 function toogle() {
-  flag.value = !flag.value
+  flag.value = !flag.value;
 }
 </script>
 
 <template>
   <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+    <img
+      alt="Vue logo"
+      class="logo"
+      src="@/assets/logo.svg"
+      width="125"
+      height="125"
+    />
 
     <button @click="toogle">toogle</button>
     <div class="wrapper">
