@@ -1,45 +1,48 @@
 <script setup lang="ts">
+import { useTodoStore } from '@/stores/todo';
 import { nextTick, reactive, ref, useTemplateRef } from 'vue';
 import { Todo } from './type';
+
+const { todoList } = useTodoStore();
 
 const options = {
   importance: [
     {
       value: 1,
       label: '很重要',
-      color: '#f03e3e',
+      color: 'orangered',
     },
     {
       value: 2,
       label: '比较重要',
-      color: '#fab005',
+      color: 'orange',
     },
     {
       value: 3,
       label: '一般重要',
-      color: '#339af0',
+      color: 'blue',
     },
     {
       value: 4,
       label: '略微重要',
-      color: '#8ce99a',
+      color: 'green',
     },
   ],
   priority: [
     {
       value: 1,
       label: '高',
-      color: '#fcc419',
+      color: 'gold',
     },
     {
       value: 2,
       label: '中',
-      color: '#4dabf7',
+      color: 'arcoblue',
     },
     {
       value: 3,
       label: '低',
-      color: '#38d9a9',
+      color: 'lime',
     },
   ],
 };
@@ -50,12 +53,11 @@ function getTargetOption(key: keyof typeof options, id: number) {
 
 const modalVisible = ref(false);
 
-const todoList = reactive<Todo[]>([]);
-
 const todoForm = reactive<Todo>({
   priority: 1,
   importance: 2,
   content: '',
+  status: 0,
 });
 
 const contentInputRef = useTemplateRef('contentInputRef');
@@ -76,7 +78,6 @@ async function handleSubmit() {
   }
   todoList.push({ ...todoForm });
   modalVisible.value = false;
-
   todoForm.content = '';
 }
 
@@ -112,20 +113,33 @@ function handleDone(index: number) {
             <div class="flex items-center gap-10px">
               <span class="text-blue-5">{{ item.content }}</span>
               <a-tag
+                bordered
                 :color="getTargetOption('importance', item.importance)?.color"
                 >{{
                   getTargetOption('importance', item.importance)?.label
                 }}</a-tag
               >
               <a-tag
+                bordered
                 :color="getTargetOption('priority', item.priority)?.color"
-                >{{ getTargetOption('priority', item.priority)?.label }}</a-tag
+                >{{
+                  getTargetOption('priority', item.priority)?.label
+                }}优先级</a-tag
               >
             </div>
 
-            <a-button type="dashed" status="success" @click="handleDone(index)">
-              <template #icon> <icon-check /> </template>
-            </a-button>
+            <a-space>
+              <a-button type="primary" disabled @click="handleDone(index)">
+                <template #icon> <icon-edit /> </template>
+              </a-button>
+              <a-button
+                type="dashed"
+                status="success"
+                @click="handleDone(index)"
+              >
+                <template #icon> <icon-check /> </template>
+              </a-button>
+            </a-space>
           </div>
         </template>
       </main>

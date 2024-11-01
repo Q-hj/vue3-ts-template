@@ -4,7 +4,7 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      redirect: '/test',
+      redirect: '/todo',
     },
     {
       path: '/test',
