@@ -13,7 +13,7 @@
     "useDefineForClassFields": true,
     "resolveJsonModule": true,
     // "isolatedModules": true,//确保每个文件都可以安全地进行转译而不依赖其他导入。
-    "sourceMap": true,
+    "sourceMap": false,
     "baseUrl": "./",
     "paths": {
       "@/*": ["src/*"]
