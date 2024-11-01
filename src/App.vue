@@ -1,28 +1,25 @@
-<script setup lang="ts">
-import { ref } from 'vue';
-
-const obj = ref({
-  x: 0,
-  y: 0,
-});
-
-setTimeout(() => {
-  // 可以触发响应式
-  Object.assign(obj.value, { x: 1, y: 2 });
-}, 2000);
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <p>{{ obj }}</p>
-  <nav>
-    <RouterLink to="/">Home</RouterLink>
-    <RouterLink to="/login">login</RouterLink>
-  </nav>
-  <router-view />
+  <div class="full flex-col">
+    <nav class="py10 flex justify-around gap-20 bg-blue-1">
+      <RouterLink to="/test">测试页面</RouterLink>
+      <!-- <RouterLink to="/login">login</RouterLink> -->
+      <RouterLink to="/todo">todo</RouterLink>
+    </nav>
+    <main flex-1>
+      <router-view />
+    </main>
+  </div>
 </template>
 
 <style scoped>
-a.router-link-active {
-  color: rgb(56, 139, 139);
+a {
+  color: #000;
+  /* text-decoration: none; */
+}
+
+.router-link-active {
+  color: #12b886;
 }
 </style>

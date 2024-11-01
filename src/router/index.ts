@@ -4,20 +4,26 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      redirect: '/home',
-      component: () => import('@/views/home/HomeView.vue'),
+      redirect: '/test',
+    },
+    {
+      path: '/test',
+      component: () => import('@/views/test/testPage.vue'),
       children: [
         {
           path: '/home',
-          name: 'home',
-          component: () => import('@/views/home/components/SubHomeView.vue'),
+          component: () => import('@/views/test/components/SubHomeView.vue'),
         },
         {
           path: '/about',
-          name: 'about',
-          component: () => import('@/views/home/components/AboutView.vue'),
+          component: () => import('@/views/test/components/AboutView.vue'),
         },
       ],
+    },
+    {
+      path: '/todo',
+      name: 'todo',
+      component: () => import('@/views/todo/todo.vue'),
     },
     {
       path: '/login',

@@ -1,4 +1,5 @@
-import './assets/main.css';
+import '@/assets/styles/index.css';
+import 'uno.css';
 
 import { createPinia } from 'pinia';
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
