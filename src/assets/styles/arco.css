@@ -1,0 +1,8 @@
+.arco-input-wrapper {
+  background-color: transparent;
+  border-color: #8690b1;
+}
+.arco-input-wrapper:hover {
+  background-color: transparent;
+  border-color: rgb(var(--primary-6));
+}

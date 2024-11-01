@@ -8,18 +8,11 @@
       <RouterLink to="/todo">todo</RouterLink>
     </nav>
     <main flex-1>
-      <router-view />
+      <a-config-provider size="small" update-at-scroll>
+        <router-view />
+      </a-config-provider>
     </main>
   </div>
 </template>
 
-<style scoped>
-a {
-  color: #000;
-  /* text-decoration: none; */
-}
-
-.router-link-active {
-  color: #12b886;
-}
-</style>
+<style scoped></style>
