@@ -18,6 +18,10 @@ watch(modalVisible, async (visible) => {
   todoFormRef.value?.clearValidate();
 });
 
+const contentInputRef = useTemplateRef('contentInputRef');
+
+const todoFormRef = useTemplateRef('todoFormRef');
+
 /** 表单 */
 const todoForm = reactive<Todo>({
   priority: 1,
@@ -26,15 +30,12 @@ const todoForm = reactive<Todo>({
   status: 0,
 });
 
-const contentInputRef = useTemplateRef('contentInputRef');
-
-const todoFormRef = useTemplateRef('todoFormRef');
-
 async function handleSubmit() {
   const error = await todoFormRef.value?.validate();
   if (error) {
     return false;
   }
+
   // 新增逻辑 在此处理
   todoList.push({ ...todoForm });
   // 处理之后要执行的的回调，父组件传入进来 在此执行

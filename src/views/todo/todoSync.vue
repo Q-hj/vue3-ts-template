@@ -1,10 +1,16 @@
 <script setup lang="ts">
 import { useTodoStore } from '@/stores/todo';
-import { provide, useTemplateRef } from 'vue';
+import { provide, ref } from 'vue';
 
-import EditModel from './components/EditModel.vue';
+import SyncEdit from './components/SyncEdit.vue';
 import { options } from './data';
 import { optionsKey } from './symbol';
+
+/**
+ * 同步编辑
+ * @description 父组件只定义 modalVisible 控制弹框显示，编辑逻辑 和 弹框打开回调 写在弹框组件内
+ * @description 特点：主题代码迁移至新组件内，父组件不参与 逻辑处理
+ */
 
 const { todoList } = useTodoStore();
 
@@ -14,22 +20,20 @@ function getTargetOption(key: keyof typeof options, id: number) {
   return options[key].find(({ value }) => value === id);
 }
 
-const EditModelRef = useTemplateRef('EditModelRef');
+/** 弹框显示 */
+const modalVisible = ref(false);
 
 /**
  * 处理新增事件
  */
 async function handleAdd() {
-  const todoForm = await EditModelRef.value!.handleAdd();
-
-  todoList.unshift({ ...todoForm });
-
-  // 无法控制弹框关闭
-  // setTimeout(() => {
-  //  模拟异步操作
-  // }, 2000);
+  modalVisible.value = true;
 }
 
+/**
+ * 完成TODO
+ * @param index 行索引
+ */
 function handleDone(index: number) {
   todoList.splice(index, 1);
 }
@@ -95,7 +99,7 @@ function handleDone(index: number) {
     </div>
   </section>
 
-  <EditModel ref="EditModelRef" />
+  <SyncEdit v-model:visible="modalVisible" />
 </template>
 
 <style scoped>
