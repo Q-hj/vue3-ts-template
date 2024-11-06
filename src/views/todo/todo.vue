@@ -1,84 +1,27 @@
 <script setup lang="ts">
 import { useTodoStore } from '@/stores/todo';
-import { nextTick, reactive, ref, useTemplateRef } from 'vue';
-import { Todo } from './type';
+import { provide, ref } from 'vue';
+
+import Edit from './components/edit.vue';
+import { options } from './data';
+import { optionsKey } from './symbol';
 
 const { todoList } = useTodoStore();
 
-const options = {
-  importance: [
-    {
-      value: 1,
-      label: '很重要',
-      color: 'orangered',
-    },
-    {
-      value: 2,
-      label: '比较重要',
-      color: 'orange',
-    },
-    {
-      value: 3,
-      label: '一般重要',
-      color: 'blue',
-    },
-    {
-      value: 4,
-      label: '略微重要',
-      color: 'green',
-    },
-  ],
-  priority: [
-    {
-      value: 1,
-      label: '高',
-      color: 'gold',
-    },
-    {
-      value: 2,
-      label: '中',
-      color: 'arcoblue',
-    },
-    {
-      value: 3,
-      label: '低',
-      color: 'lime',
-    },
-  ],
-};
+provide<typeof options>(optionsKey, options);
 
 function getTargetOption(key: keyof typeof options, id: number) {
   return options[key].find(({ value }) => value === id);
 }
 
+/** 弹框显示 */
 const modalVisible = ref(false);
 
-const todoForm = reactive<Todo>({
-  priority: 1,
-  importance: 2,
-  content: '',
-  status: 0,
-});
-
-const contentInputRef = useTemplateRef('contentInputRef');
-
+/**
+ * 处理新增事件
+ */
 async function handleAdd() {
   modalVisible.value = true;
-  await nextTick();
-  contentInputRef.value?.focus();
-  todoFormRef.value?.clearValidate();
-}
-
-const todoFormRef = useTemplateRef('todoFormRef');
-
-async function handleSubmit() {
-  const error = await todoFormRef.value?.validate();
-  if (error) {
-    return false;
-  }
-  todoList.push({ ...todoForm });
-  modalVisible.value = false;
-  todoForm.content = '';
 }
 
 function handleDone(index: number) {
@@ -146,62 +89,10 @@ function handleDone(index: number) {
     </div>
   </section>
 
-  <a-modal
-    v-model:visible="modalVisible"
-    title="新建代办"
-    width="550px"
-    draggable
-    body-class=""
-    @before-ok="handleSubmit"
-  >
-    <a-form ref="todoFormRef" :model="todoForm" auto-label-width>
-      <a-form-item show-colon field="priority" label="优先级" required>
-        <a-radio-group v-model="todoForm.priority">
-          <a-radio
-            v-for="item in options.priority"
-            :key="item.value"
-            :value="item.value"
-            :style="{
-              '---color': item.color,
-            }"
-            >{{ item.label }}
-          </a-radio>
-        </a-radio-group>
-      </a-form-item>
-      <a-form-item show-colon field="importance" label="重要程度" required>
-        <a-radio-group v-model="todoForm.importance">
-          <a-radio
-            v-for="item in options.importance"
-            :key="item.value"
-            :value="item.value"
-            :style="{
-              '---color': item.color,
-            }"
-            >{{ item.label }}
-          </a-radio>
-        </a-radio-group>
-      </a-form-item>
-      <a-form-item show-colon field="content" label="代办内容" required>
-        <a-input
-          ref="contentInputRef"
-          v-model="todoForm.content"
-          placeholder="请输入代办内容"
-          @keyup.enter="handleSubmit"
-        ></a-input>
-      </a-form-item>
-    </a-form>
-  </a-modal>
+  <Edit v-model:visible="modalVisible" />
 </template>
 
 <style scoped>
-:deep(.arco-radio-label) {
-  color: var(---color);
-}
-/* :deep(.arco-radio-icon) {
-  background-color: var(---color);
-  border-color: var(---color);
-} */
-
 .text-gradient {
   background: linear-gradient(to right, #6a11cb, #2575fc);
   background-clip: text;
